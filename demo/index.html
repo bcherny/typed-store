@@ -7,15 +7,17 @@
   <script src="../bower_components/baobab/build/baobab.min.js"></script>
   <script src="../bower_components/lodash/lodash.js"></script>
   <script src="../dist/store.js"></script>
+  <script src="../dist/type.js"></script>
   <script>
 
     angular
     .module('demo', ['coatue/store'])
     .controller('demo', ($scope, Store) => {
 
+      const t = type.type
       const s = new Store({
-        foo: 1,
-        bar: 2
+        foo: t.string,
+        bar: t.number
       }, { onUpdate: _ => console.log('change!', _) })
 
       // works because dirty checking works on any object
@@ -26,6 +28,9 @@
       Object.observe(s, _ => console.log('O.o', _))
 
       s.bar = 3
+
+      // throws a TypeError
+      s.bar = 'baz'
 
     })
 

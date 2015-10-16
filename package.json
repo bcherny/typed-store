@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "gulp watch"
+    "start": "npm install; tsd install; gulp"
   },
   "author": "",
   "license": "ISC",
@@ -20,6 +20,7 @@
     "gulp-typescript": "^2.9.2",
     "gulp-util": "^3.0.6",
     "gulp-watch": "^4.3.5",
-    "node-notifier": "^4.3.1"
+    "node-notifier": "^4.3.1",
+    "tsd": "^0.6.5"
   }
 }

@@ -68,7 +68,11 @@
                                     return cursor.get(key);
                                 },
                                 set: function set(_) {
-                                    return cursor.set(key, _);
+                                    if (value(_)) {
+                                        cursor.set(key, _);
+                                    } else {
+                                        throw new TypeError('type check failed!');
+                                    }
                                 }
                             });
                         }

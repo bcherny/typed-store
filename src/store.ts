@@ -49,7 +49,13 @@ angular
           cursor.set(key, value)
           Object.defineProperty(facade, key, {
             get: () => cursor.get(key),
-            set: _ => cursor.set(key, _)
+            set: _ => {
+              if (value(_)) {
+                cursor.set(key, _)
+              } else {
+                throw new TypeError('type check failed!')
+              }
+            }
           })
         }
       })
