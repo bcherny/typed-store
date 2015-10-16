@@ -1,0 +1,21 @@
+<!doctype html>
+<html ng-app="demo">
+<head>
+</head>
+<body>
+  <script src="../bower_components/angular/angular.js"></script>
+  <script src="../bower_components/baobab/build/baobab.min.js"></script>
+  <script src="../bower_components/lodash/lodash.js"></script>
+  <script src="../dist/store.js"></script>
+  <script>
+
+    angular
+    .module('demo', ['coatue/store'])
+    .run((Store) => {
+      const s = new Store()
+      console.log(s)
+    })
+
+  </script>
+</body>
+</html>
