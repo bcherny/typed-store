@@ -10,7 +10,8 @@ const DIST_DIR = './dist'
 
 gulp.task('scripts', function () {
 
-  return gulp.src(`${ SRC_DIR }/store.ts`)
+  return gulp.src(`${ SRC_DIR }/*.ts`)
+    .on('error', compileError)
     .pipe(ts({
       module: 'commonjs',
       target: 'es6'
@@ -44,7 +45,7 @@ function error (err, prefix) {
   util.log(util.colors.red.bold(prefix || 'Error'), err.message)
 }
 
-function browserifyError (err) {
-  error.call(this, err, 'Browserify error')
+function compileError (err) {
+  error.call(this, err, 'Compile error')
   this.emit('end')
 }

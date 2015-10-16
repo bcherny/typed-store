@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="demo">
+<html ng-app="demo" ng-controller="demo">
 <head>
 </head>
 <body>
@@ -11,13 +11,22 @@
 
     angular
     .module('demo', ['coatue/store'])
-    .run((Store) => {
+    .controller('demo', ($scope, Store) => {
+
       const s = new Store({
         foo: 1,
         bar: 2
-      })
-      
-      console.log(s.get('foo'))
+      }, { onUpdate: _ => console.log('change!', _) })
+
+      // works because dirty checking works on any object
+      $scope.s = s
+      $scope.$watch('s.bar', _ => console.log('$watch', _))
+
+      // doesn't work because O.o only works on plain objects
+      Object.observe(s, _ => console.log('O.o', _))
+
+      s.bar = 3
+
     })
 
   </script>

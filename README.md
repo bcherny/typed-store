@@ -11,6 +11,7 @@ angular.service('myService', Store => {
   const myStore = new Store({ foo: 1 }, {
     onUpdate: changes => { ... }
   })
+  myStore.foo = 2
 })
 ```
 

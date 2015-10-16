@@ -10,7 +10,7 @@
         factory(mod.exports, global.angular, global.Baobab, global._);
         global.store = mod.exports;
     }
-})(this, function (exports, _angular, _baobab, _) {
+})(this, function (exports, _angular, _baobab, _2) {
     'use strict';
 
     var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ('value' in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
@@ -34,21 +34,47 @@
             function Store() {
                 var _this = this;
 
-                var data = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
+                var schema = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
                 var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
 
                 _classCallCheck(this, Store);
 
-                var id = options.id ? options.id : (0, _.uniqueId)();
-                var onUpdate = options.onUpdate || _.noop;
-                store.set(id, data);
+                var id = options.id ? options.id : (0, _2.uniqueId)();
+                var onUpdate = options.onUpdate || _2.noop;
+                store.set(id, {});
                 this.cursor = store.select(id);
                 this.cursor.on('update', function () {
                     return onUpdate(_this.cursor.get());
                 });
+                // create getters & setters for each key in the schema
+                this.assign(this.cursor, this, schema);
             }
 
             _createClass(Store, [{
+                key: 'assign',
+                value: function assign(cursor, facade, schema) {
+                    var _this2 = this;
+
+                    Object.keys(schema).forEach(function (key) {
+                        var value = schema[key];
+                        if ((0, _2.isPlainObject)(value)) {
+                            cursor.set(key, {});
+                            facade[key] = {};
+                            _this2.assign(cursor.select(key), facade[key], value);
+                        } else {
+                            cursor.set(key, value);
+                            Object.defineProperty(facade, key, {
+                                get: function get() {
+                                    return cursor.get(key);
+                                },
+                                set: function set(_) {
+                                    return cursor.set(key, _);
+                                }
+                            });
+                        }
+                    });
+                }
+            }, {
                 key: 'get',
                 value: function get(key) {
                     return this.cursor.get(key);
