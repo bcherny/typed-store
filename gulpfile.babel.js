@@ -1,6 +1,7 @@
 import babel from 'gulp-babel'
 import gulp from 'gulp'
 import notifier from 'node-notifier'
+import ts from 'gulp-typescript'
 import util from 'gulp-util'
 import watch from 'gulp-watch'
 
@@ -9,7 +10,11 @@ const DIST_DIR = './dist'
 
 gulp.task('scripts', function () {
 
-  return gulp.src(`${ SRC_DIR }/store.js`)
+  return gulp.src(`${ SRC_DIR }/store.ts`)
+    .pipe(ts({
+      module: 'commonjs',
+      target: 'es6'
+    }))
     .pipe(babel({
       modules: 'umd'
     }))
@@ -23,7 +28,7 @@ gulp.task('default', [
 
 gulp.task('watch', function () {
 
-  watch(SRC_DIR + '/*.js', start('scripts'))
+  watch(`${ SRC_DIR }/*.ts`, start('scripts'))
 
 })
 
@@ -33,7 +38,7 @@ function start (task) {
 
 function error (err, prefix) {
   notifier.notify({
-    message: 'Error: ' + err.message,
+    message: `Error: ${ err.message }`,
     title: prefix || 'Error'
   })
   util.log(util.colors.red.bold(prefix || 'Error'), err.message)

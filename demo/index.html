@@ -12,8 +12,12 @@
     angular
     .module('demo', ['coatue/store'])
     .run((Store) => {
-      const s = new Store()
-      console.log(s)
+      const s = new Store({
+        foo: 1,
+        bar: 2
+      })
+      
+      console.log(s.get('foo'))
     })
 
   </script>

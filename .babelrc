@@ -1,3 +1,10 @@
 {
-  "plugins": ["typecheck"]
+  "plugins": [
+    "babel-plugin-module-alias"
+  ],
+  "extra": {
+    "module-alias": [
+      { "src": "lodash", "expose": "_" }
+    ]
+  }
 }
